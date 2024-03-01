@@ -1,8 +1,49 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+require('dotenv').config();
+
 const port = process.env.PORT || 3001;
 
+const stripe = require("stripe")(process.env.STRIPE_KEY);
+
+app.use(cors());
+app.use(express.static("public"));
+app.use(express.json());
+
 app.get("/", (req, res) => res.type('html').send(html));
+
+const calculateOrderAmount = (items) => {
+  console.log('items', items);
+// Replace this constant with a calculation of the order's amount
+// Calculate the order total on the server to prevent
+// people from directly manipulating the amount on the client
+return 555;
+};
+
+app.get('/', (req, res) => {
+console.log('bonjour');
+res.send('salut');
+});
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { items } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "cad",
+    // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
+
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -54,7 +95,7 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Render!
+      Hello from Render!!
     </section>
   </body>
 </html>
