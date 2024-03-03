@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 require('dotenv').config();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const stripe = require("stripe")("sk_test_51OmInCEhAxgEcWCboN7mwcutKpOyIjlouBJFrtTQYGbDMUk6RGBeKdTRK2evj2FrPVX8yee6BozuVinrK0WnDl1h008x9uMbcV");
 
