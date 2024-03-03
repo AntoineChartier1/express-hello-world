@@ -1,19 +1,26 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
+require('dotenv').config();
 
 const port = process.env.PORT || 3001;
 
-const stripe = require("stripe")(process.env.STRIPE_KEY);
+const stripe = require("stripe")("sk_test_51OmInCEhAxgEcWCboN7mwcutKpOyIjlouBJFrtTQYGbDMUk6RGBeKdTRK2evj2FrPVX8yee6BozuVinrK0WnDl1h008x9uMbcV");
 
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 
+app.get('/', (req, res) => {
+console.log('bonjour');
+res.send('salut');
+res.type('html').send(html)
+});
+
 app.get("/", (req, res) => res.type('html').send(html));
 
 const calculateOrderAmount = (items) => {
+  console.log('key: ' + process.env.STRIPE_KEY);
   console.log('items', items);
 // Replace this constant with a calculation of the order's amount
 // Calculate the order total on the server to prevent
@@ -21,10 +28,6 @@ const calculateOrderAmount = (items) => {
 return items[0].prix;
 };
 
-app.get('/', (req, res) => {
-console.log('bonjour');
-res.send('salut');
-});
 
 app.post("/create-payment-intent", async (req, res) => {
   const { items } = req.body;
