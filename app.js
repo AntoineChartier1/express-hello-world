@@ -20,7 +20,7 @@ console.log('bonjour');
 app.get("/", (req, res) => res.type('html').send(html));
 
 const calculateOrderAmount = (items) => {
-  console.log('key: ' + process.env.STRIPE_KEY);
+  // console.log('key: ' + process.env.STRIPE_KEY);
   console.log('items', items);
 // Replace this constant with a calculation of the order's amount
 // Calculate the order total on the server to prevent
@@ -51,7 +51,6 @@ app.post("/create-payment-intent", async (req, res) => {
 
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
 
 // webhook endpoint to receive events from Stripe 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
