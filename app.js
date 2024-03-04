@@ -48,6 +48,10 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 
+// This is your Stripe CLI webhook secret for testing your endpoint locally.
+const endpointSecret = "whsec_c0f65db6c3e41560c031a28df8f38436adc5ba0a96eb476e7adbfea9b559f50b";
+
+
 // webhook endpoint to receive events from Stripe 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
