@@ -61,7 +61,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     return;
   }
 
-  
+
   // Handle the event
   switch (event.type) {
     case 'checkout.session.async_payment_failed':
@@ -85,6 +85,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
       console.log(`Unhandled event type ${event.type}`);
   }
   // Return a 200 response to acknowledge receipt of the event
+  console.log('success' + event.type + ' ' + event.data.object.id + ' ' + response.statusMessage );
   response.send();
 });
 
