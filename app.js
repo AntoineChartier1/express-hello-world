@@ -13,8 +13,8 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
 console.log('bonjour');
-res.send('salut');
-res.type('html').send(html)
+// res.send('salut');
+// res.type('html').send(html)
 });
 
 app.get("/", (req, res) => res.type('html').send(html));
@@ -50,7 +50,7 @@ app.post("/create-payment-intent", async (req, res) => {
 
 
 
-const endpointSecret = "whsec_UxfP5mFpxt5awnM2TjSutYPGly0DLcfR";
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 
 // webhook endpoint to receive events from Stripe 
