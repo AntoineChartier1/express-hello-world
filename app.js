@@ -54,6 +54,7 @@ const endpointSecret = "whsec_c0f65db6c3e41560c031a28df8f38436adc5ba0a96eb476e7a
 
 // webhook endpoint to receive events from Stripe 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
+  console.log("webhook received");
   const sig = request.headers['stripe-signature'];
 
   let event;
