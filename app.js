@@ -53,7 +53,7 @@ app.post("/create-payment-intent", async (req, res) => {
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // webhook endpoint to receive events from Stripe 
-app.post('/webhook', express.raw({type: 'application/json'}), async (request, response) => {
+app.post('/webhook', express.json({type: 'application/json'}), (request, response) => {
   console.log("webhook received");
   const sig = request.headers['stripe-signature'];
 
