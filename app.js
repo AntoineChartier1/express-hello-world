@@ -61,6 +61,9 @@ app.post("/webhook", express.json({ type: 'application/json' }), (request, respo
   console.log("webhook received");
   const sig = request.headers['stripe-signature'];
 
+
+
+
   let event;
 
   try {
@@ -71,28 +74,54 @@ app.post("/webhook", express.json({ type: 'application/json' }), (request, respo
   }
 
 
-  // Handle the event
-  switch (event.type) {
-    case 'checkout.session.async_payment_failed':
-      const checkoutSessionAsyncPaymentFailed = event.data.object;
-      // Then define and call a function to handle the event checkout.session.async_payment_failed
-      break;
-    case 'checkout.session.async_payment_succeeded':
-      const checkoutSessionAsyncPaymentSucceeded = event.data.object;
-      // Then define and call a function to handle the event checkout.session.async_payment_succeeded
-      break;
-    case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object;
-      // Then define and call a function to handle the event checkout.session.completed
-      break;
-    case 'checkout.session.expired':
-      const checkoutSessionExpired = event.data.object;
-      // Then define and call a function to handle the event checkout.session.expired
-      break;
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+// Handle the event
+switch (event.type) {
+  case 'payment_intent.amount_capturable_updated':
+    const paymentIntentAmountCapturableUpdated = event.data.object;
+    console.log('payment_intent.amount_capturable_updated');
+    // Then define and call a function to handle the event payment_intent.amount_capturable_updated
+    break;
+  case 'payment_intent.canceled':
+    const paymentIntentCanceled = event.data.object;
+    console.log('payment_intent.canceled');
+    // Then define and call a function to handle the event payment_intent.canceled
+    break;
+  case 'payment_intent.created':
+    const paymentIntentCreated = event.data.object;
+    console.log('payment_intent.created');
+    // Then define and call a function to handle the event payment_intent.created
+    break;
+  case 'payment_intent.partially_funded':
+    const paymentIntentPartiallyFunded = event.data.object;
+    console.log('payment_intent.partially_funded');
+    // Then define and call a function to handle the event payment_intent.partially_funded
+    break;
+  case 'payment_intent.payment_failed':
+    const paymentIntentPaymentFailed = event.data.object;
+    console.log('payment_intent.payment_failed');
+    // Then define and call a function to handle the event payment_intent.payment_failed
+    break;
+  case 'payment_intent.processing':
+    const paymentIntentProcessing = event.data.object;
+    console.log('payment_intent.processing');
+    // Then define and call a function to handle the event payment_intent.processing
+    break;
+  case 'payment_intent.requires_action':
+    const paymentIntentRequiresAction = event.data.object;
+    console.log('payment_intent.requires_action');
+    // Then define and call a function to handle the event payment_intent.requires_action
+    break;
+  case 'payment_intent.succeeded':
+    const paymentIntentSucceeded = event.data.object;
+    console.log(paymentIntentSucceeded);
+    console.log('payment_intent.succeeded', );
+    // Then define and call a function to handle the event payment_intent.succeeded
+    break;
+  // ... handle other event types
+  default:
+    console.log(`Unhandled event type ${event.type}`);
+}
+
   // Return a 200 response to acknowledge receipt of the event
   console.log('success' + event.type + ' ' + event.data.object.id + ' ' + response.statusMessage);
   response.send();
