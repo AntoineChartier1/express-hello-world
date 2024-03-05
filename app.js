@@ -9,8 +9,8 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 app.use(cors());
 app.use(express.static("public"));
-app.use(express.json());
 app.use('/webhook', express.raw({ type: 'application/json' }));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   console.log('bonjour');
