@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8001;
 
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
@@ -22,7 +22,7 @@ app.get("/", (req, res) => res.type('html').send(html));
 
 const calculateOrderAmount = (items) => {
   // console.log('key: ' + process.env.STRIPE_KEY);
-  console.log('prix: ' + items[0].prix/100)
+  console.log('prix: ' + items[0].prix / 100)
   // Replace this constant with a calculation of the order's amount
   // Calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
@@ -32,7 +32,7 @@ const calculateOrderAmount = (items) => {
 
 app.post("/create-payment-intent", async (req, res) => {
   console.log("Paiement intent received");
-  const { items } = req.body;
+  const { items, metadata } = req.body;
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
@@ -42,7 +42,12 @@ app.post("/create-payment-intent", async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
-    
+  });
+
+  const customer = await stripe.customers.create({
+    metadata: {
+      order_id: metadata.userId,
+    },
   });
 
   res.send({
