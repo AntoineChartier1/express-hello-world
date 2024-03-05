@@ -31,7 +31,7 @@ const calculateOrderAmount = (items) => {
 
 
 app.post("/create-payment-intent", async (req, res) => {
-  console.log("Paiement intent received");
+  console.log("Paiement intent received", req.rawBody.toString());
   const { items, metadata } = req.body;
 
   // Create a PaymentIntent with the order amount and currency
@@ -42,13 +42,11 @@ app.post("/create-payment-intent", async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
-  });
-
-  const customer = await stripe.customers.create({
     metadata: {
-      order_id: metadata.userId,
+      user_id: metadata.userId,
     },
   });
+
 
   res.send({
     clientSecret: paymentIntent.client_secret,
