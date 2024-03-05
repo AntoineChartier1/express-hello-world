@@ -116,7 +116,7 @@ switch (event.type) {
   case 'payment_intent.succeeded':
     const paymentIntentSucceeded = event.data.object;
     console.log(paymentIntentSucceeded);
-    console.log('payment_intent.succeeded', );
+    console.log('payment_intent.succeeded for :', paymentIntentSucceeded.metadata.user_id );
     // Then define and call a function to handle the event payment_intent.succeeded
     break;
   // ... handle other event types
