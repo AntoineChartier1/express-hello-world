@@ -11,21 +11,22 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 
+
 app.get('/', (req, res) => {
-console.log('bonjour');
-// res.send('salut');
-// res.type('html').send(html)
+  console.log('bonjour');
+  // res.send('salut');
+  // res.type('html').send(html)
 });
 
 app.get("/", (req, res) => res.type('html').send(html));
 
 const calculateOrderAmount = (items) => {
   // console.log('key: ' + process.env.STRIPE_KEY);
-  console.log('items', items);
-// Replace this constant with a calculation of the order's amount
-// Calculate the order total on the server to prevent
-// people from directly manipulating the amount on the client
-return items[0].prix;
+  console.log('prix: ' + items[0].prix/100)
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return items[0].prix;
 };
 
 
@@ -41,6 +42,7 @@ app.post("/create-payment-intent", async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
+    
   });
 
   res.send({
@@ -53,7 +55,7 @@ app.post("/create-payment-intent", async (req, res) => {
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // webhook endpoint to receive events from Stripe 
-app.post("/webhook", express.json({type: 'application/json'}), (request, response) => {
+app.post("/webhook", express.json({ type: 'application/json' }), (request, response) => {
   console.log("webhook received");
   const sig = request.headers['stripe-signature'];
 
@@ -90,7 +92,7 @@ app.post("/webhook", express.json({type: 'application/json'}), (request, respons
       console.log(`Unhandled event type ${event.type}`);
   }
   // Return a 200 response to acknowledge receipt of the event
-  console.log('success' + event.type + ' ' + event.data.object.id + ' ' + response.statusMessage );
+  console.log('success' + event.type + ' ' + event.data.object.id + ' ' + response.statusMessage);
   response.send();
 });
 
