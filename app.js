@@ -31,17 +31,14 @@ app.get('/', async (req, res) => {
   console.log('bonjour');
   const userRef = db.collection('users').doc('qnA8y2uZaXa1e3g6PaEWl0eWT9E3');
   try {
-    await updateDoc(userRef, {
+    await userRef.update({
       lastUpdate: new Date(),
-      reservations: arrayUnion("new reservation2"),
+      reservations: admin.firestore.FieldValue.arrayUnion("new reservation2"),
     });
     console.log('bonjour2');
   } catch (error) {
     console.error("Failed to update document:", error);
   }
-  // jecris
-  // res.send('salut');
-  // res.type('html').send(html)
 });
 
 // app.get("/", (req, res) => res.type('html').send(html));
