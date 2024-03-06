@@ -16,12 +16,16 @@ app.use(express.static("public"));
 app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 
-var serviceAccount = require("/etc/secrets/clefs");
+
+const fs = require('fs');
+let rawdata = fs.readFileSync('/etc/secrets/clefs');
+let serviceAccount = JSON.parse(rawdata);
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-
+const db = admin.firestore();
 
 app.get('/', async (req, res) => {
   console.log('bonjour');
