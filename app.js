@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const admin = require('firebase-admin');
+
 const { updateDoc, doc, arrayUnion } = require("firebase/firestore");
-const { db } = require("./firebase");
 require('dotenv').config();
 
 const port = process.env.PORT || 8001;
@@ -13,6 +14,13 @@ app.use(cors());
 app.use(express.static("public"));
 app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
+
+var serviceAccount = require("./etc/secrets/clefs");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+let db = admin.firestore();
 
 app.get('/', async (req, res) => {
   console.log('bonjour');
@@ -27,7 +35,7 @@ app.get('/', async (req, res) => {
   // res.type('html').send(html)
 });
 
-app.get("/", (req, res) => res.type('html').send(html));
+// app.get("/", (req, res) => res.type('html').send(html));
 
 const calculateOrderAmount = (items) => {
   // console.log('key: ' + process.env.STRIPE_KEY);
