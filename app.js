@@ -15,7 +15,7 @@ app.use(express.static("public"));
 app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 
-var serviceAccount = require("./etc/secrets/clefs");
+var serviceAccount = require("/etc/secrets/clefs");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
