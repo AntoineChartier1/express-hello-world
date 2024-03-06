@@ -141,16 +141,17 @@ switch (event.type) {
     const paymentIntentSucceeded = event.data.object;
     console.log(paymentIntentSucceeded);
     console.log('payment_intent.succeeded for :', paymentIntentSucceeded.metadata.user_id );
-    const userRef = db.collection('users').doc(paymentIntentSucceeded.metadata.user_id);
-    try {
-      await userRef.update({
-        lastUpdate: new Date(),
-        reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservation_id),
-      });
-      console.log('bonjour2');
-    } catch (error) {
-      console.error("Failed to update document:", error);
-    }
+    console.log('reservation_id :', paymentIntentSucceeded.metadata.reservation_id );
+    // const userRef = db.collection('users').doc(paymentIntentSucceeded.metadata.user_id);
+    // try {
+    //   await userRef.update({
+    //     lastUpdate: new Date(),
+    //     reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservation_id),
+    //   });
+    //   console.log('bonjour2');
+    // } catch (error) {
+    //   console.error("Failed to update document:", error);
+    // }
     // Then define and call a function to handle the event payment_intent.succeeded
     break;
   // ... handle other event types
