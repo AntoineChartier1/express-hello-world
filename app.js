@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const { updateDoc, doc, arrayUnion } = require("firebase/firestore");
+const { db } = require("./firebase");
 require('dotenv').config();
 
 const port = process.env.PORT || 8001;
@@ -12,8 +14,15 @@ app.use(express.static("public"));
 app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   console.log('bonjour');
+  
+  await updateDoc(doc(db, "users", "qnA8y2uZaXa1e3g6PaEWl0eWT9E3"), {
+    lastUpdate: new Date(),
+    // how to add a new reservation to the array?
+    reservations: arrayUnion("new reservation2"),
+  }); 
+  console.log('bonjour2');
   // res.send('salut');
   // res.type('html').send(html)
 });
