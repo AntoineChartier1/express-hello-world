@@ -17,6 +17,13 @@ app.use(express.json());
 app.get('/', async (req, res) => {
   console.log('bonjour');
   
+  await updateDoc(doc(db, "users", "qnA8y2uZaXa1e3g6PaEWl0eWT9E3"), {
+    lastUpdate: new Date(),
+    // how to add a new reservation to the array?
+    reservations: arrayUnion("new reservation2"),
+  }); 
+  console.log('bonjour2');
+  // res.send('salut');
   // res.type('html').send(html)
 });
 
