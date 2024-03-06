@@ -29,16 +29,16 @@ const db = admin.firestore();
 
 app.get('/', async (req, res) => {
   console.log('bonjour');
-  const userRef = db.collection('users').doc('qnA8y2uZaXa1e3g6PaEWl0eWT9E3');
-  try {
-    await userRef.update({
-      lastUpdate: new Date(),
-      reservations: admin.firestore.FieldValue.arrayUnion("new reservation2"),
-    });
-    console.log('bonjour2');
-  } catch (error) {
-    console.error("Failed to update document:", error);
-  }
+  // const userRef = db.collection('users').doc('qnA8y2uZaXa1e3g6PaEWl0eWT9E3');
+  // try {
+  //   await userRef.update({
+  //     lastUpdate: new Date(),
+  //     reservations: admin.firestore.FieldValue.arrayUnion("new reservation2"),
+  //   });
+  //   console.log('bonjour2');
+  // } catch (error) {
+  //   console.error("Failed to update document:", error);
+  // }
 });
 
 // app.get("/", (req, res) => res.type('html').send(html));
@@ -81,7 +81,7 @@ app.post("/create-payment-intent", async (req, res) => {
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // webhook endpoint to receive events from Stripe 
-app.post("/webhook", express.raw({ type: 'application/json' }), (request, response) => {
+app.post("/webhook", express.raw({ type: 'application/json' }), async (request, response) => {
   console.log("webhook received");
   console.log("sig: " + request.headers['stripe-signature']);
   const sig = request.headers['stripe-signature'];
@@ -141,6 +141,16 @@ switch (event.type) {
     const paymentIntentSucceeded = event.data.object;
     console.log(paymentIntentSucceeded);
     console.log('payment_intent.succeeded for :', paymentIntentSucceeded.metadata.user_id );
+    const userRef = db.collection('users').doc(paymentIntentSucceeded.metadata.user_id);
+    try {
+      await userRef.update({
+        lastUpdate: new Date(),
+        reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservationId),
+      });
+      console.log('bonjour2');
+    } catch (error) {
+      console.error("Failed to update document:", error);
+    }
     // Then define and call a function to handle the event payment_intent.succeeded
     break;
   // ... handle other event types
