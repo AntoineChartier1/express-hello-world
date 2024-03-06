@@ -29,12 +29,12 @@ const db = admin.firestore();
 
 app.get('/', async (req, res) => {
   console.log('bonjour');
-  
+  const userRef = db.collection('users').doc('qnA8y2uZaXa1e3g6PaEWl0eWT9E3');
   try {
-    await updateDoc(doc(db, "users", "qnA8y2uZaXa1e3g6PaEWl0eWT9E3"), {
+    await updateDoc(userRef, {
       lastUpdate: new Date(),
       reservations: arrayUnion("new reservation2"),
-    }); 
+    });
     console.log('bonjour2');
   } catch (error) {
     console.error("Failed to update document:", error);
