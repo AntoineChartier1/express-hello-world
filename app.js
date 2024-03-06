@@ -85,8 +85,8 @@ app.post("/webhook", express.raw({ type: 'application/json' }), async (request, 
   console.log("webhook received");
   console.log("sig: " + request.headers['stripe-signature']);
   const sig = request.headers['stripe-signature'];
-  console.log("webhook received après sig");
-  console.log("event: " + request.body);
+  // console.log("webhook received après sig");
+  // console.log("event: " + request.body);
 
 
 
