@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const admin = require('firebase-admin');
+const { initializeApp } = require('firebase-admin/app');
 
 const { updateDoc, doc, arrayUnion } = require("firebase/firestore");
 require('dotenv').config();
@@ -18,19 +19,23 @@ app.use(express.json());
 var serviceAccount = require("/etc/secrets/clefs");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
-let db = admin.firestore();
+
 
 app.get('/', async (req, res) => {
   console.log('bonjour');
   
-  await updateDoc(doc(db, "users", "qnA8y2uZaXa1e3g6PaEWl0eWT9E3"), {
-    lastUpdate: new Date(),
-    // how to add a new reservation to the array?
-    reservations: arrayUnion("new reservation2"),
-  }); 
-  console.log('bonjour2');
+  try {
+    await updateDoc(doc(db, "users", "qnA8y2uZaXa1e3g6PaEWl0eWT9E3"), {
+      lastUpdate: new Date(),
+      reservations: arrayUnion("new reservation2"),
+    }); 
+    console.log('bonjour2');
+  } catch (error) {
+    console.error("Failed to update document:", error);
+  }
+  // jecris
   // res.send('salut');
   // res.type('html').send(html)
 });
