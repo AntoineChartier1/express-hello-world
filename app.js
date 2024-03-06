@@ -145,7 +145,7 @@ switch (event.type) {
     try {
       await userRef.update({
         lastUpdate: new Date(),
-        reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservationId),
+        reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservation_id),
       });
       console.log('bonjour2');
     } catch (error) {
