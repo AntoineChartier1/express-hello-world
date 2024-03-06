@@ -81,7 +81,7 @@ app.post("/create-payment-intent", async (req, res) => {
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // webhook endpoint to receive events from Stripe 
-app.post("/webhook", express.raw({ type: 'application/json' }), (request, response) => {
+app.post("/webhook", express.raw({ type: 'application/json' }), async (request, response) => {
   console.log("webhook received");
   console.log("sig: " + request.headers['stripe-signature']);
   const sig = request.headers['stripe-signature'];
@@ -142,16 +142,16 @@ switch (event.type) {
     console.log(paymentIntentSucceeded);
     console.log('payment_intent.succeeded for :', paymentIntentSucceeded.metadata.user_id );
     console.log('reservation_id :', paymentIntentSucceeded.metadata.reservation_id );
-    // const userRef = db.collection('users').doc(paymentIntentSucceeded.metadata.user_id);
-    // try {
-    //   await userRef.update({
-    //     lastUpdate: new Date(),
-    //     reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservation_id),
-    //   });
-    //   console.log('bonjour2');
-    // } catch (error) {
-    //   console.error("Failed to update document:", error);
-    // }
+    const userRef = db.collection('users').doc(paymentIntentSucceeded.metadata.user_id);
+    try {
+      await userRef.update({
+        lastUpdate: new Date(),
+        reservations: admin.firestore.FieldValue.arrayUnion(paymentIntentSucceeded.metadata.reservation_id),
+      });
+      console.log('bonjour2');
+    } catch (error) {
+      console.error("Failed to update document:", error);
+    }
     // Then define and call a function to handle the event payment_intent.succeeded
     break;
   // ... handle other event types
